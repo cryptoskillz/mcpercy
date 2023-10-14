@@ -25,7 +25,7 @@ pkill esbuild
 
 
 echo "starting wrangler"
-wrangler pages dev _site --port 8789
+wrangler pages dev _site --port 8789 --kv=datastore --persist --binding SECRET=fdfdf BROWSERLESSTOKEN=62803a1e-84c3-48a6-b3e1-505c4fad2e22   --local --live-reload  &
 
 if [[ $ELEVENTY_ENV == 'cypress' ]]
 then

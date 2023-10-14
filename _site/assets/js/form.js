@@ -50,20 +50,22 @@ window.trelloform.addEventListener("submit", function(event) {
         } else {
             theUrl = 'https://mcpercy.pages.dev/'
             //get the card id
-            let cardId = t.getContext().card;
+            cardId = t.getContext().card;
 
         }
 
         //get the control url
-
+        let control = document.getElementById('control').value;
         //get the variant url 
-
+        let variant = document.getElementById('variant').value;
         //get the device 
+        let device = document.getElementById('device').value;
 
         //add it to the snaopshot method
 
         //set the method
-        const theMethod = `api/snapshot/`
+        const theMethod = `api/snapshot/?control=${control}&variant=${variant}&device=${device}&cardid=${cardId}`;
+        console.log(theMethod)
         //call it
         fetch(`${theUrl}${theMethod}`)
             .then(response => {

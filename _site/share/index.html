@@ -1,6 +1,197 @@
-control
-<img src="/assets/images/hoff.jpeg"/>
-varaint
-<img src="/assets/images/hoff.jpeg"/>
-diff
-<img src="/assets/images/hoff.jpeg"/>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title></title>
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template
+
+    <link href="/assets/css/style.min.css" rel="stylesheet">
+
+    -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <!-- Custom styles for this page -->
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    Image Snapshot
+                    <!-- Topbar Navbar -->
+                </nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <div id="showBody" class="">
+                        
+<script src="https://cdn.jsdelivr.net/npm/resemblejs@5.0.0/resemble.min.js"></script>
+<br>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800" id="data-header"></h1>
+</div>
+<p class="mb-4"></p>
+<div class="row">
+        <div class="col-sm-2" id="imageOptions">
+            <div id="comparsionDiv" class="">
+                <a href="javascript:compareImages(1)" id="showDiff" />Show Differences</a><a href="javascript:compareImages(0)" class="d-none" id="hideDiff" />Hide Differences</a>
+            </div>
+        </div>
+</div>
+<div id="imagesWrapper" class="">
+    
+    <div class="row">
+
+        <div class="col-sm-4" id="baselineImageDiv">
+            <h1 id="leftImage"></h1>
+            <div id="controlImageScroller" class="dotted-line">
+            </div>
+        </div>
+        <div class="col-sm-4  other" id="snapshotImageDiv">
+            <h1 id="rightImage"></h1>
+            <div id="variantImageScroller" class="dotted-line ">
+            </div>
+        </div>
+         <div class="col-md-4">
+      <!-- Third Column Content: Comments and Comment Box -->
+      <div class="comments-section d-none">
+        <h3>COMMENTS</h3>
+        <div id="commentsDiv">
+
+        </div>
+        <div class="comment-box">
+          <h4 id="commentHeader">Add a comment</h4>
+          <form>
+            <div class="form-group">
+              <textarea class="form-control" rows="3" placeholder="Your comment" id="theComment"></textarea>
+            </div>
+            <input type="text" a class="form-control"  id="commentPassword" name="commentPassword" placeholder="Password"><br>
+            <a id="addCommentButton" type="submit" class="btn btn-primary">Submit</a>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+//set the headers
+document.getElementById("leftImage").innerHTML = "CONTROL"
+document.getElementById("rightImage").innerHTML = "VARIANT"
+//get the control
+const controlElement = document.getElementById("controlImageScroller");
+//get the variant
+const variantElement = document.getElementById("variantImageScroller");
+//set the image width
+const setRes = 500;
+
+//check if its localhost
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    theUrl = `http://localhost:8789/`
+} else {
+    theUrl = 'https://mcpercy.pages.dev/'
+    //get the card id
+}
+
+//get the id 
+const imageId = getUrlParam('id');
+//build the control image
+const controlImage = `${theUrl}api/image?id=${imageId}-control`;
+//build the varaint image
+const variantImage = `${theUrl}api/image?id=${imageId}-variant`;
+//set the different images
+let differentImage = "";
+
+//set the elements
+controlElement.innerHTML = `<img src="${controlImage}" style="width:${setRes}px" class=""/>`;
+variantElement.innerHTML = `<img src="${variantImage}" style="width:${setRes}px" class=""/>`;
+
+//get a url paramater
+function getUrlParam(parameter) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(parameter);
+}
+
+
+//compare images function 
+const compareImages = (setImageDifferent) => {
+    let setRes = 500;
+
+    //check we have both a baseline and a snapshop imates
+    //if (baselineImage != "" && snapshotImage != "") {
+        //check if we want to show the difference
+        if (setImageDifferent == 1) {
+            //check uf we have already processed the differences
+            if (differentImage == "") {
+                ///compare the images
+                resemble(controlImage).compareTo(variantImage).onComplete(function(data) {
+                    // Display the image comparison data as an image
+                    var comparisonResultElement = document.getElementById('variantImageScroller');
+                    var image = new Image();
+                    image.src = data.getImageDataUrl();
+                    //add it to the element
+                    comparisonResultElement.innerHTML = `<img src="${image.src }" style="width:${setRes}px" class=""/>`;
+                    differentImage = image.src;
+                })
+            } else {
+                //use the saved differences image
+                var comparisonResultElement = document.getElementById('variantImageScroller');
+                comparisonResultElement.innerHTML = `<img src="${differentImage}" style="width:${setRes}px" class=""/>`;
+            }
+            //show the hide diff button
+            document.getElementById('showDiff').classList.add("d-none");
+            document.getElementById('hideDiff').classList.remove("d-none");
+        } else {
+            //show the normal sbnapshot image
+            var comparisonResultElement = document.getElementById('variantImageScroller');
+            comparisonResultElement.innerHTML = `<img src="${variantImage}" style="width:${setRes}px" class=""/>`;
+            //show the show differences buttons
+            document.getElementById('showDiff').classList.remove("d-none");
+            document.getElementById('hideDiff').classList.add("d-none");
+        }
+  //  }
+}
+
+</script>
+
+
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+</body>
+
+</html>

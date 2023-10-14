@@ -29,4 +29,14 @@ module.exports = function(eleventyConfig) {
     "robots.txt": "robots.txt"
   });
 
+   eleventyConfig.addNunjucksAsyncFilter("jsmin", async (code, callback) => {
+    try {
+      const minified = await Terser.minify(code);
+      return callback(null, minified.code);
+    } catch (err) {
+      console.error("Error during terser minify:", err);
+      return callback(err, code);
+    }
+  });
+
   };
