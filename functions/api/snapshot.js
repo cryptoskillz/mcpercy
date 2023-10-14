@@ -98,7 +98,7 @@ export async function onRequestGet(context) {
         //get the control snapshot
         const res1 = await getBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,controlUrl,context,"control",device);
         //get the variant snapshot
-        const res2 = awaitgetBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,variantUrl,context,"variant",device);
+        const res2 = await getBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,variantUrl,context,"variant",device);
     }
     //playwright
     if (snapShotEngine == 2) {
