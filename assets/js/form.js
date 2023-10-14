@@ -54,6 +54,14 @@ window.trelloform.addEventListener("submit", function(event) {
 
         }
 
+        //get the control url
+
+        //get the variant url 
+
+        //get the device 
+
+        //add it to the snaopshot method
+
         //set the method
         const theMethod = `api/snapshot/`
         //call it
