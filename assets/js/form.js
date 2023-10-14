@@ -6,6 +6,12 @@ window.trelloform.addEventListener("submit", function(event) {
      var commentText = 'This is a comment to update the activity log.';
   var cardId = t.getContext().card;
 
+return t
+      .set(card, 'shared', 'comment', commentText)
+      .then(function () {
+        t.closePopup();
+      });
+/*
   t
     .card('id', 'name')  // Add any other fields you need
     .then(function(card) {
@@ -19,7 +25,7 @@ window.trelloform.addEventListener("submit", function(event) {
         });
     });
     //return t.closePopup();
-    /*
+    
     return t
       .set("card", "shared", "trelloform", "yay")
       .then(function () {
