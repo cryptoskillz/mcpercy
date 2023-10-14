@@ -12,7 +12,7 @@ TrelloPowerUp.initialize({
         callback: function (t) {
           return t.popup({
             title: "McPercy",
-            url: "index.html",
+            url: "form.html",
           });
         },
       },
