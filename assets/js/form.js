@@ -1,60 +1,83 @@
 var t = TrelloPowerUp.iframe();
 
+//check URL
+function isURL(str) {
+    // Regular expression for a simple URL pattern
+    var urlPattern = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(\/\S*)?$/i;
+    // Test if the string matches the URL pattern
+    return urlPattern.test(str);
+}
+
+//submit the form
 window.trelloform.addEventListener("submit", function(event) {
     // Stop the browser trying to submit the form itself.
     event.preventDefault();
-    var commentText = 'This is a comment to update the activity log.';
-  var cardId = t.getContext().card;
-console.log(cardId)
-console.log(t)
-    return t
-        .set("card", "shared", "comments", "yay")
-        .then(function() {
-            t.closePopup();
-        });
-    /*
-      t
-        .set('card', 'shared', 'comment', commentText)
-        .then(function () {
-          console.log('Comment added successfully');
-        })
-        .catch(function (error) {
-          console.error('Error adding comment:', error);
-        });
-    /*
-      t
-        .card('id', 'name')  // Add any other fields you need
-        .then(function(card) {
-          return t
-            .set(card.id, 'shared', 'comment', commentText)
-            .then(function () {
-              console.log('Comment added successfully');
+    //check all the fields are done.
+    const control = document.getElementById('control').value;
+    const variant = document.getElementById('variant').value;
+    //reset the errors
+    document.getElementById('controlError').innerText = ""
+    document.getElementById('variantError').innerText = ""
+    document.getElementById('errorDiv').innerText = ""
+    //set an allow var
+    let allowIt = 1;
+    //check if the control is a URL
+    if (isURL(control)  ==false) {
+        allowIt = 0;
+        document.getElementById('controlError').innerText = "Please enter a valid URL"
+    }
+    //check if the variant is a URL
+    if (isURL(variant) == false ) {
+        allowIt = 0;
+        document.getElementById('variantError').innerText = "Please enter a valid URL"
+
+    }
+    //check the URL's do not match
+    if (control == variant) {
+        allowIt = 0;
+        document.getElementById('errorDiv').innerText = "URL's must be different"
+    }
+
+    //check to see if we want to call the snapshop API
+    if (allowIt == 1) {
+        //set card id to a test one for well you know testing purposes
+        let cardId = "aBFTnUXw"
+        //set a url var
+        let theUrl = "";
+        //check if its localhost
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            theUrl = `http://localhost:8789/`
+        } else {
+            theUrl = 'https://mcpercy.pages.dev/'
+            //get the card id
+            let cardId = t.getContext().card;
+
+        }
+
+        //set the method
+        const theMethod = `api/snapshot/`
+        //call it
+        fetch(`${theUrl}${theMethod}`)
+            .then(response => {
+                // Check if the request was successful (status code 200-299)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the JSON in the response
+                return response.json();
             })
-            .catch(function (error) {
-              console.error('Error adding comment:', error);
+            .then(data => {
+                // Handle the data from the response
+                console.log('API Response:', data);
+                return t.closePopup();
+            })
+            .catch(error => {
+                // Handle errors during the fetch
+                console.error('Error:', error);
             });
-        });
-        //return t.closePopup();
-        
-        return t
-          .set("card", "shared", "trelloform", "yay")
-          .then(function () {
-            t.closePopup();
-          });
-          )*/
+    }
+
 });
-
-
 t.render(function() {
     t.sizeTo("#trelloform").done();
 });
-
-/*
-
-curl --request POST \
-  --url 'https://api.trello.com/1/cards/651ffc5863ec5e0f7aa07bf6/actions/comments?text=check%20out%20this%20sweet%20McPercy%20Image%20https%3A%2F%2Fmcpercy.pages.dev%2Fassets%2Fimages%2Fhoff.jpeg&key=c86b743cedafad2bf66b12783fa21a36&token=ATTA2335ae7825ebbc5f622cfb249cd57b8e8df58cf251b53f0fb0611f6f0916ba4a234FB042' \
-  --header 'Accept: application/json'
-
-get the data to check
-curl --request GET --url 'https://api.trello.com/1/cards/aBFTnUXw/pluginData?key=c86b743cedafad2bf66b12783fa21a36&token=ATTA2335ae7825ebbc5f622cfb249cd57b8e8df58cf251b53f0fb0611f6f0916ba4a234FB042'
-*/

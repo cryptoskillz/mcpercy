@@ -14,14 +14,19 @@
       <select name="size" id="Device">
         <option value="Iphone">Iphone</option>
         <option value="Desktop">Desktop</option>
-        <option value="Desktop">All</option>
       </select>
-      <label for="estimateSize">Control:</label>
-      <input typle="text" id="control"/>
-      <label for="estimateSize">Variant:</label>
-      <input typle="text" id="variant"/>
+      <label for="control">Control:</label>
+      <input type="text" id="control"/>
+        <div id="controlError" style="color: red;"></div>
+
+      <label for="variant">Variant:</label>
+      <input type="text" id="variant"/>
+        <div id="variantError" style="color: red;"></div>
+
       <button type="submit" class="mod-primary">GO</button>
     </form>
+    <div id="errorDiv" style="color: red;"></div>
+
         <script src="/assets/js/form.js"></script>
 
   </body>
