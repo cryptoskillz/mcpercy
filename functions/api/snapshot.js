@@ -36,7 +36,8 @@ let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,UR
             body: JSON.stringify(jsonData)
         });
 
-        
+            console.log(`${cardid}-${device}-${corv}`)
+
         //get the repsonse
         const imageArrayBuffer = await response.arrayBuffer();
         const imageUint8Array = new Uint8Array(imageArrayBuffer);
@@ -82,6 +83,7 @@ export async function onRequestGet(context) {
     let height = 1920;
     let agentName = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
     //check id we want to chnage it
+    console.log(device)
     if (device == 2) {
         //add play right later.
         snapShotEngine = 2;
