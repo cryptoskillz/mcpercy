@@ -21,8 +21,9 @@ var commentText = 'This is a comment to update the activity log.';
     .then(function () {
       t.closePopup();
     });
+    )*/
 });
-*/
+
 
 t.render(function () {
   t.sizeTo("#trelloform").done();
