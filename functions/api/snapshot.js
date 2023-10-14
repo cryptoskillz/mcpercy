@@ -10,6 +10,42 @@
         body: JSON.stringify(jsonData)
     });
 */
+
+let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,URLtoImage) => {
+    const jsonData = {
+            url: URLtoImage,
+            "options": {
+                "fullPage": true
+            },
+            "gotoOptions": {
+                "waitUntil": "networkidle2",
+            },
+            viewport: {
+                width: width,
+                height: height,
+            }
+        };
+        //make the call
+        const response = await fetch(headlessUrl, {
+            method: 'POST',
+            headers: {
+                'Cache-Control': 'no-cache',
+                "Content-Type": "application/json",
+                'User-Agent': agentName
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        /*
+        //get the repsonse
+        const imageArrayBuffer = await response.arrayBuffer();
+        const imageUint8Array = new Uint8Array(imageArrayBuffer);
+        //save it to KV
+        const KV = context.env.datastore
+        const kvId = `${cardid}`;
+        await KV.put(kvId, imageUint8Array);
+        */
+}
 export async function onRequestGet(context) {
     //build the paramaters
     const {
@@ -20,27 +56,65 @@ export async function onRequestGet(context) {
         next, // used for middleware or to fetch assets
         data, // arbitrary space for passing data between middlewares
     } = context;
-    //get the control, variant url and device type
 
-    //snapshot the control 
+    const headlessUrl = `https://chrome.browserless.io/screenshot?token=${context.env.BROWSERLESSTOKEN}`;
+    //get the card id 
+    const cardid = "651ffc5863ec5e0f7aa07bf6";
+    //get the control url 
+    const controlUrl = "";
+    //get the variant url
+    const variantUrl = "";
+    //get the device
+    //1 = desktop
+    //2 = iphone15
+    const device = 1;
+    //set it to desktop
+
+    //1 = browersless
+    //2 = playright
+    let snapShotEngine = 2;
+    let width = 1080;
+    let height = 1920;
+    let agentName = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
+    //check id we want to chnage it
+    if (device == 2) {
+        //add play right later.
+        //snapShotEngine = 2;
+        width = 390;
+        height = 884;
+        agentName = "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/114.0.5735.50 Mobile/15E148 Safari/604.1";
+    }
+
+
+    //use browerless
+    if (snapShotEngine == 1) {
+        //get the control snapshot
+        getBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,controlUrl);
+        //get the variant snapshot
+        getBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,variantUrl);
+    }
+    //playwright
+    if (snapShotEngine == 2) {
+
+    }
+
+
+    const commentText = `Your sweet sweet McCpercy comparison will be here! ${context.env.APPLICATIONURL}share?id=${cardid}`;
+    console.log(commentText);    
 
     //snapshot the variant
 
-    //store in KV
 
-    //build the return URL
-    //note this is a test URL until the above is done.
-    const commentText = `check%20out%20this%20sweet%20McPercy%20Image%20https%3A%2F%2Fmcpercy.pages.dev%2Fassets%2Fimages%2Fhoff.jpeg`;
     //set the message
-    const theUrl = `https://api.trello.com/1/cards/651ffc5863ec5e0f7aa07bf6/actions/comments?text=${commentText}&key=${context.env.TRELLOKEY}&token=${context.env.TRELLOTOKEN}`
-        const response = await fetch(theUrl, {
+    const theUrl = `https://api.trello.com/1/cards/${cardid}/actions/comments?text=${commentText}&key=${context.env.TRELLOKEY}&token=${context.env.TRELLOTOKEN}`
+    const response = await fetch(theUrl, {
         method: 'POST',
         headers: {
             'Cache-Control': 'no-cache',
             "Content-Type": "application/json",
         }
     });
-
+    
     return new Response(JSON.stringify("{ok}"), { status: 200 });
 
 }

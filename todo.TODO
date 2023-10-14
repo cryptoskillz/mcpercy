@@ -1,0 +1,10 @@
+FORM JS
+ ☐ pass vars in from form.js to snapshot.js
+
+SNAPSHOT.JS
+ ☐ get the search parm vars
+ ☐ add playwright 
+ ☐ save in kv
+
+SHARE
+  ☐ move in the share code from imagesnapshot
