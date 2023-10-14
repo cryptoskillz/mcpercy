@@ -7,7 +7,7 @@ window.trelloform.addEventListener("submit", function(event) {
   var cardId = t.getContext().card;
 
 return t
-      .set(card, 'shared', 'comment', commentText)
+      .set("card", 'shared', 'comment', commentText)
       .then(function () {
         t.closePopup();
       });
