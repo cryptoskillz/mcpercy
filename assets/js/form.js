@@ -5,15 +5,19 @@ window.trelloform.addEventListener("submit", function (event) {
   event.preventDefault();
 var commentText = 'This is a comment to update the activity log.';
   
-  t.card
-    .comment({ text: commentText })
-    .then(function () {
-      console.log('Comment added successfully');
-    })
-    .catch(function (error) {
-      console.error('Error adding comment:', error);
-    });
-    t.closePopup();
+  var cardId = t.getContext().card;
+
+  Trello.post(`/1/cards/${cardId}/actions/comments`, {
+    text: commentText,
+    key: 'c86b743cedafad2bf66b12783fa21a36',
+    token: 'ATTA2335ae7825ebbc5f622cfb249cd57b8e8df58cf251b53f0fb0611f6f0916ba4a234FB042',
+  })
+  .then(function () {
+    console.log('Comment added successfully');
+  })
+  .catch(function (error) {
+    console.error('Error adding comment:', error);
+  });
   //return t.closePopup();
   /*
   return t
