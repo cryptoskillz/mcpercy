@@ -48,10 +48,11 @@ t.render(function() {
     t.sizeTo("#trelloform").done();
 });
 
-
+/*
 curl --request POST \
   --url 'https://api.trello.com/1/cards/aBFTnUXw/actions/comments?text={text}&key=c86b743cedafad2bf66b12783fa21a36&token=ATTA2335ae7825ebbc5f622cfb249cd57b8e8df58cf251b53f0fb0611f6f0916ba4a234FB042' \
   --header 'Accept: application/json'
 
-//get the data to check
-//curl --request GET --url 'https://api.trello.com/1/cards/aBFTnUXw/pluginData?key=c86b743cedafad2bf66b12783fa21a36&token=ATTA2335ae7825ebbc5f622cfb249cd57b8e8df58cf251b53f0fb0611f6f0916ba4a234FB042'
+get the data to check
+curl --request GET --url 'https://api.trello.com/1/cards/aBFTnUXw/pluginData?key=c86b743cedafad2bf66b12783fa21a36&token=ATTA2335ae7825ebbc5f622cfb249cd57b8e8df58cf251b53f0fb0611f6f0916ba4a234FB042'
+*/
