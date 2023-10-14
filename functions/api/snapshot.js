@@ -102,7 +102,7 @@ export async function onRequestGet(context) {
     }
     const theId = `${cardid}-${device}`;
     //set the comment text
-    const commentText = `Your sweet sweet McCpercy comparison will be here!!! ${context.env.APPLICATIONURL}share?id=${theId}`;
+    const commentText = `Your sweet sweet McCpercy comparison is here!!! ${context.env.APPLICATIONURL}share?id=${theId}`;
 
     //set the message
     const theUrl = `https://api.trello.com/1/cards/${cardid}/actions/comments?text=${commentText}&key=${context.env.TRELLOKEY}&token=${context.env.TRELLOTOKEN}`
