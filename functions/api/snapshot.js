@@ -12,7 +12,6 @@
 */
 
 let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,URLtoImage,context,corv,device) => {
-    console.log('gah')
     const jsonData = {
             url: URLtoImage,
             "options": {
@@ -26,7 +25,6 @@ let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,UR
                 height: height,
             }
         };
-        console.log('gahh')
         //make the call
         const response = await fetch(headlessUrl, {
             method: 'POST',
@@ -37,8 +35,6 @@ let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,UR
             },
             body: JSON.stringify(jsonData)
         });
-
-        console.log(`${cardid}-${device}-${corv}`)
 
         //get the repsonse
         const imageArrayBuffer = await response.arrayBuffer();
