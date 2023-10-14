@@ -3,43 +3,43 @@ var t = TrelloPowerUp.iframe();
 window.trelloform.addEventListener("submit", function(event) {
     // Stop the browser trying to submit the form itself.
     event.preventDefault();
-  var commentText = 'This is a comment to update the activity log.';
-      
+    var commentText = 'This is a comment to update the activity log.';
+
     return t
-      .set("card", "shared", "comment", "yay")
-      .then(function () {
-        t.closePopup();
-      });
-/*
-  t
-    .set('card', 'shared', 'comment', commentText)
-    .then(function () {
-      console.log('Comment added successfully');
-    })
-    .catch(function (error) {
-      console.error('Error adding comment:', error);
-    });
-/*
-  t
-    .card('id', 'name')  // Add any other fields you need
-    .then(function(card) {
-      return t
-        .set(card.id, 'shared', 'comment', commentText)
+        .set("card", "shared", "comments", "yay")
+        .then(function() {
+            t.closePopup();
+        });
+    /*
+      t
+        .set('card', 'shared', 'comment', commentText)
         .then(function () {
           console.log('Comment added successfully');
         })
         .catch(function (error) {
           console.error('Error adding comment:', error);
         });
-    });
-    //return t.closePopup();
-    
-    return t
-      .set("card", "shared", "trelloform", "yay")
-      .then(function () {
-        t.closePopup();
-      });
-      )*/
+    /*
+      t
+        .card('id', 'name')  // Add any other fields you need
+        .then(function(card) {
+          return t
+            .set(card.id, 'shared', 'comment', commentText)
+            .then(function () {
+              console.log('Comment added successfully');
+            })
+            .catch(function (error) {
+              console.error('Error adding comment:', error);
+            });
+        });
+        //return t.closePopup();
+        
+        return t
+          .set("card", "shared", "trelloform", "yay")
+          .then(function () {
+            t.closePopup();
+          });
+          )*/
 });
 
 
