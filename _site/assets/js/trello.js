@@ -11,8 +11,8 @@ TrelloPowerUp.initialize({
         text: "McPercy",
         callback: function (t) {
           return t.popup({
-            title: "McPercy",
-            url: "form/",
+            title: "Compare",
+            url: "/form/",
           });
         },
       },
