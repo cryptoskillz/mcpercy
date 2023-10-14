@@ -3,6 +3,19 @@ var t = TrelloPowerUp.iframe();
 window.trelloform.addEventListener("submit", function (event) {
   // Stop the browser trying to submit the form itself.
   event.preventDefault();
+var commentText = 'This is a comment to update the activity log.';
+  
+  t.card
+    .comment({ text: commentText })
+    .then(function () {
+      console.log('Comment added successfully');
+    })
+    .catch(function (error) {
+      console.error('Error adding comment:', error);
+    });
+    t.closePopup();
+  //return t.closePopup();
+  /*
   return t
     .set("card", "shared", "trelloform", "yay")
     .then(function () {
