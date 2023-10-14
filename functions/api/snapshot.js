@@ -12,6 +12,7 @@
 */
 
 let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,URLtoImage,context,corv,device) => {
+    console.log('gah')
     const jsonData = {
             url: URLtoImage,
             "options": {
@@ -25,6 +26,7 @@ let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,UR
                 height: height,
             }
         };
+        console.log('gahh')
         //make the call
         const response = await fetch(headlessUrl, {
             method: 'POST',
@@ -36,7 +38,7 @@ let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,UR
             body: JSON.stringify(jsonData)
         });
 
-            console.log(`${cardid}-${device}-${corv}`)
+        console.log(`${cardid}-${device}-${corv}`)
 
         //get the repsonse
         const imageArrayBuffer = await response.arrayBuffer();
@@ -83,7 +85,6 @@ export async function onRequestGet(context) {
     let height = 1920;
     let agentName = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
     //check id we want to chnage it
-    console.log(device)
     if (device == 2) {
         //add play right later.
         snapShotEngine = 2;
@@ -95,9 +96,9 @@ export async function onRequestGet(context) {
     //use browerless
     if (snapShotEngine == 1) {
         //get the control snapshot
-        getBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,controlUrl,context,"control",device);
+        const res1 = await getBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,controlUrl,context,"control",device);
         //get the variant snapshot
-        getBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,variantUrl,context,"variant",device);
+        const res2 = awaitgetBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,variantUrl,context,"variant",device);
     }
     //playwright
     if (snapShotEngine == 2) {
