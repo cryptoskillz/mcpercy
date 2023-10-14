@@ -50,10 +50,9 @@ t.render(function() {
 });
 
 /*
-check out this sweet McPercy Image <img src="https://mcpercy.pages.dev/assets/images/hoff.webp"/>
 
 curl --request POST \
-  --url 'https://api.trello.com/1/cards/651ffc5863ec5e0f7aa07bf6/actions/comments?text=check%20out%20this%20sweet%20McPercy%20Image%20%3Ca%20href%3D%22https%3A%2F%2Fmcpercy.pages.dev%2Fassets%2Fimages%2Fhoff.webp%22%2F%3E%0A&key=c86b743cedafad2bf66b12783fa21a36&token=ATTA2335ae7825ebbc5f622cfb249cd57b8e8df58cf251b53f0fb0611f6f0916ba4a234FB042' \
+  --url 'https://api.trello.com/1/cards/651ffc5863ec5e0f7aa07bf6/actions/comments?text=check%20out%20this%20sweet%20McPercy%20Image%20https%3A%2F%2Fmcpercy.pages.dev%2Fassets%2Fimages%2Fhoff.jpeg&key=c86b743cedafad2bf66b12783fa21a36&token=ATTA2335ae7825ebbc5f622cfb249cd57b8e8df58cf251b53f0fb0611f6f0916ba4a234FB042' \
   --header 'Accept: application/json'
 
 get the data to check
