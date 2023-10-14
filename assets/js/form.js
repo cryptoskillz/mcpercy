@@ -6,6 +6,7 @@ window.trelloform.addEventListener("submit", function(event) {
     var commentText = 'This is a comment to update the activity log.';
   var cardId = t.getContext().card;
 console.log(cardId)
+console.log(t)
     return t
         .set("card", "shared", "comments", "yay")
         .then(function() {
