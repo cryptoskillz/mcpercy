@@ -1,11 +1,21 @@
 var t = TrelloPowerUp.iframe();
 
 //check URL
-function isURL(str) {
+let isURL = (str) => {
     // Regular expression for a simple URL pattern
     var urlPattern = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(\/\S*)?$/i;
     // Test if the string matches the URL pattern
     return urlPattern.test(str);
+}
+
+// Function to update the div content
+let updateDiv = () => {
+    // You can put any logic here to update the content
+    let theDiv = document.getElementById('processingdiv')
+    if (theDiv.innerText != "Processing...")
+      theDiv.innerText = theDiv.innerText+".";
+    else
+      theDiv.innerText = "Processing";
 }
 
 //submit the form
@@ -40,6 +50,11 @@ window.trelloform.addEventListener("submit", function(event) {
 
     //check to see if we want to call the snapshop API
     if (allowIt == 1) {
+        //show the processing class. 
+        document.getElementById('formdiv').style.display = 'none';
+        document.getElementById('processingdiv').style.display = '';
+        // Update the div every second
+         var intervalId = setInterval(updateDiv, 1000);
         //set card id to a test one for well you know testing purposes
         let cardId = "aBFTnUXw"
         //set a url var
@@ -60,12 +75,9 @@ window.trelloform.addEventListener("submit", function(event) {
         let variant = document.getElementById('variant').value;
         //get the device 
         let device = document.getElementById('device').value;
-
-        //add it to the snaopshot method
-
         //set the method
         const theMethod = `api/snapshot/?control=${control}&variant=${variant}&device=${device}&cardid=${cardId}`;
-        console.log(theMethod)
+        //console.log(theMethod)
         //call it
         fetch(`${theUrl}${theMethod}`)
             .then(response => {
@@ -74,15 +86,18 @@ window.trelloform.addEventListener("submit", function(event) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 // Parse the JSON in the response
+                clearInterval(intervalId);
                 return response.json();
             })
             .then(data => {
                 // Handle the data from the response
                 console.log('API Response:', data);
+                clearInterval(intervalId);
                 return t.closePopup();
             })
             .catch(error => {
                 // Handle errors during the fetch
+                clearInterval(intervalId);
                 console.error('Error:', error);
             });
     }

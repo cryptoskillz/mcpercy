@@ -1,16 +1,4 @@
-//make the call
-/*
-    const response = await fetch(headlessUrl, {
-        method: 'POST',
-        headers: {
-            'Cache-Control': 'no-cache',
-            "Content-Type": "application/json",
-            'User-Agent': snapshotItem.agentName
-        },
-        body: JSON.stringify(jsonData)
-    });
-*/
-
+//call browersless 
 let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,URLtoImage,context,corv,device) => {
     const jsonData = {
             url: URLtoImage,
@@ -82,7 +70,6 @@ export async function onRequestGet(context) {
     let agentName = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
     //check id we want to chnage it
     if (device == 2) {
-        //add play right later.
         snapShotEngine = 2;
         width = 390;
         height = 884;
@@ -113,7 +100,5 @@ export async function onRequestGet(context) {
             "Content-Type": "application/json",
         }
     });
-    
     return new Response(JSON.stringify("{ok}"), { status: 200 });
-
 }

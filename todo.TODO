@@ -7,4 +7,10 @@ SNAPSHOT.JS
  ✔ save in kv @done (23-10-15 00:35)
 
 SHARE
-  ☐ move in the share code from imagesnapshot
+  ✔ move in the share code from imagesnapshot @done (23-10-15 02:34)
+  ☐ show what image you are showing (desktop / mobile ) and dimension
+
+TRELLO
+
+  ☐ add a spinner when its taking snapshots
+  
