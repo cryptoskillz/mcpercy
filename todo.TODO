@@ -5,6 +5,7 @@ SNAPSHOT.JS
  ✔ get the search parm vars @done (23-10-15 00:14)
  ☐ add playwright 
  ✔ save in kv @done (23-10-15 00:35)
+ ☐ we could make it show more than one and keep a history of images, maybe later (or this would be the paid part.)
 
 SHARE
   ✔ move in the share code from imagesnapshot @done (23-10-15 02:34)
@@ -12,5 +13,6 @@ SHARE
 
 TRELLO
 
-  ☐ add a spinner when its taking snapshots
-  
+  ✔ add a spinner when its taking snapshots @done (23-10-15 15:16)
+
+
