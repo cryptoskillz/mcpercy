@@ -229,6 +229,6 @@ t.render(function() {
 
         })
         .then(function() {
-            t.sizeTo("#estimate").done();
+           // t.sizeTo("#estimate").done();
         });
 });

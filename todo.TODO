@@ -1,6 +1,8 @@
 FORM JS
  ✔ pass vars in from form.js to snapshot.js @done (23-10-15 00:09)
  ☐ add the snapshot call back
+ ☐ check the variant URL is a url
+ ☐ check it is not the same as 
 
 SNAPSHOT.JS
  ✔ get the search parm vars @done (23-10-15 00:14)
