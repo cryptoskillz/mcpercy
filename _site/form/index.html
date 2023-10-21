@@ -1,37 +1,41 @@
 <html>
-  <head>
+
+<head>
     <link rel="stylesheet" href="https://p.trellocdn.com/power-up.min.css" />
     <style>
-      select {
+        select {
         height: 30px;
       }
     </style>
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="processingdiv" style="display: none;">Processing</div>
     <div id="formdiv" class="d-none">
-      <!--<form id="trelloform">-->
+        <!--<form id="trelloform">-->
         <label for="device">Select a Device:</label>
         <select name="device" id="device">
-          <option value="1">Desktop</option>
-          <!--<option value="2">Iphone</option>-->
+            <option value="1">Desktop</option>
+            <!--<option value="2">Iphone</option>-->
         </select>
-        <label for="controlURL">Control:</label>
-        <input type="text" id="controlURL" name="controlURL"/>
-          <div id="controlError" style="color: red;"></div>
-        <button id="addControl" type="" class="mod-primary">GO</button>
-
-        <label for="variantURL">Variant:</label>
-        <input type="text" id="variantURL" name="variantURL"/>
-          <div id="variantError" style="color: red;"></div>
-
-        <button type="submit" class="mod-primary">GO</button>
-     <!-- </form>-->
+        <div id="controlForm" style="display:none">
+            <label for="controlURL">Control:</label>
+            <input type="text" id="controlURL" name="controlURL" />
+            <div id="controlError" style="color: red;"></div>
+            <button id="addControl" type="" class="mod-primary">GO</button>
+        </div>
+        <div id="variantForm" style="display:none">
+            <div id="controlURLSet"></div>
+            <label for="variantURL">Variant:</label>
+            <input type="text" id="variantURL" name="variantURL" />
+            <div id="variantError" style="color: red;"></div>
+            <button type="submit" class="mod-primary">GO</button>
+        </div>
+        <!-- </form>-->
     </div>
     <div id="errorDiv" style="color: red;"></div>
+    <script src="/assets/js/form.js"></script>
+</body>
 
-        <script src="/assets/js/form.js"></script>
-
-  </body>
 </html>
