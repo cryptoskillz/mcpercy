@@ -4,19 +4,20 @@ FORM JS
  ✔ check the variant URL is a url @done (23-10-21 19:36)
  ✔ check it is not the same as @done (23-10-21 19:36)
  ✔ add processing ticker @done (23-10-21 22:38)
+ ☐ store the share URL in the trello card and show it under the variant button
 
 SNAPSHOT.JS
  ✔ get the search parm vars @done (23-10-15 00:14)
  ☐ add playwright 
  ✔ save in kv @done (23-10-15 00:35)
  ☐ we could make it show more than one and keep a history of images, maybe later (or this would be the paid part.)
- ☐ add device and desktop to the message that goes to trello
+ ✔ add device and desktop to the message that goes to trello @done (23-10-21 23:53)
  ✔ add the device type we store in KV so mobile etc does not overwirte it. @done (23-10-21 22:38)
 
 
 SHARE
   ✔ move in the share code from imagesnapshot @done (23-10-15 02:34)
-  ☐ show what image you are showing (desktop / mobile ) and dimension
+  ✔ show what image you are showing (desktop / mobile ) and dimension @done (23-10-22 00:10)
   ✔ update the shre url to take in device type @done (23-10-21 22:38)
 
 TRELLO

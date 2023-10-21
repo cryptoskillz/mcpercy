@@ -100,10 +100,10 @@ let takeSnapshot = (state) => {
     //sett the api url
     let snapshotAPI = 'https://mcpercy.pages.dev/';
     //set default card id
-    let cardId = "aBFTnUXw";
+    let cardId = "Tmy81I77";
     //check if we are local and change the API url
     if (isLocal == 1)
-        snapshotAPI = 'http://localhost:8789/'; 
+        snapshotAPI = 'http://localhost:8789/';
     else
         cardId = t.getContext().card; //get the card id
     //get the control url
@@ -178,10 +178,11 @@ document.getElementById('snapControl').addEventListener("click", function() {
 
 //this function processes the variant snapshot
 document.getElementById('snapVariant').addEventListener("click", function() {
-    //show the confirm dialog
-    if (showConfirmDialog(2) == 1) {
-        //check the form
-        if (checkForm(2) == 1) {
+
+    //check the form
+    if (checkForm(2) == 1) {
+        //show the confirm dialog
+        if (showConfirmDialog(2) == 1) {
             //take a snapshot
             takeSnapshot(2);
             //store the variant URL
