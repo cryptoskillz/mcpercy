@@ -14,11 +14,6 @@
     <div id="processingdiv" style="display: none;">Processing</div>
     <div id="formdiv" class="d-none">
         <!--<form id="trelloform">-->
-        <label for="device">Select a Device:</label>
-        <select name="device" id="device">
-            <option value="1">Desktop</option>
-            <!--<option value="2">Iphone</option>-->
-        </select>
         <div id="controlForm" style="display:none">
             <label for="controlURL">Control:</label>
             <input type="text" id="controlURL" name="controlURL" />
@@ -26,7 +21,15 @@
             <button id="addControl" type="" class="mod-primary">GO</button>
         </div>
         <div id="variantForm" style="display:none">
-            <div id="controlURLSet"></div>
+            <label for="device">Select a Device:</label>
+            <select name="device" id="device">
+                <option value="1">Desktop</option>
+                <!--<option value="2">Iphone</option>-->
+            </select>
+            <div id="controlURLDiv">
+              <div id="controlURLSet"></div>
+              <div><a href="javascript:setForm(1);" id="changeControlURL">Change</a></div>
+            </div>
             <label for="variantURL">Variant:</label>
             <input type="text" id="variantURL" name="variantURL" />
             <div id="variantError" style="color: red;"></div>

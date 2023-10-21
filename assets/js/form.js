@@ -21,8 +21,8 @@ let updateDiv = () => {
 //set the state of the form
 //1 = control form
 //2 = variant form 
-let setForm = (state) => {
-  alert(state)
+let setForm = (state,theUrl="") => {
+  //show the control form
   if (state == 1)
   {
     document.getElementById('variantForm').style.display = 'none';
@@ -30,9 +30,15 @@ let setForm = (state) => {
   }
   else
   {
+    //show the variant form
+    //hide the control form
     document.getElementById('controlForm').style.display = 'none';
+    //show the varaint form
     document.getElementById('variantForm').style.display = '';
-    document.getElementById('controlURLSet').innerText = "CONTROL:"+document.getElementById('controlURL').value;
+    //set the control URL
+    document.getElementById('controlURLSet').innerText = theUrl;
+    //set the control URL
+    document.getElementById('controlURL').value = theUrl;
   }
 
 }
@@ -56,6 +62,7 @@ let checkForm = (check) => {
 
 }
 
+
 /*
 this functon lets us run locally to make debugging easier.
 */
@@ -66,13 +73,13 @@ const urlParams = new URLSearchParams(queryString);
 //check if we are local and if so set it up 
 if (urlParams.has('local')) {
   //debug set the control URL 
-  //document.getElementById("controlURL").value = "http://www.purdyandfigg.com";
+  document.getElementById("controlURL").value = "http://www.purdyandfigg.com";
   //set the variant URL;
-  let variantURL = "";
+  //let variantURL = "";
   if (document.getElementById("controlURL").value  == "")
     setForm(1)
   else
-    setForm(2)
+    setForm(2,document.getElementById("controlURL").value)
  } 
 
 
@@ -206,7 +213,7 @@ t.render(function() {
       {
         alert('dddd')
         //show the variant form
-        setForm(1);
+        setForm(1,controlURL);
         //document.getElementById('variantForm').style.display = '';
       }
       
