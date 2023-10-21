@@ -121,7 +121,7 @@ export async function onRequestGet(context) {
             //se the share URL 
             const shareURL = `${context.env.APPLICATIONURL}share?id=${cardid}-${device}`
             //set he comment
-            const commentText = `The ${device} snapshot is ready ${shareURL}`;
+            const commentText = `The ${device} (${width}x${height}) snapshot is ready ${shareURL}`;
             //set the message
             const theUrl = `https://api.trello.com/1/cards/${cardid}/actions/comments?text=${commentText}&key=${context.env.TRELLOKEY}&token=${context.env.TRELLOTOKEN}`
             //make the call
