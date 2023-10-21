@@ -6,13 +6,28 @@ SNAPSHOT.JS
  ☐ add playwright 
  ✔ save in kv @done (23-10-15 00:35)
  ☐ we could make it show more than one and keep a history of images, maybe later (or this would be the paid part.)
+ ☐ add device and desktop to the message that goes to trello
+ ☐ add the device type we store in KV so mobile etc does not overwirte it.
+
 
 SHARE
   ✔ move in the share code from imagesnapshot @done (23-10-15 02:34)
   ☐ show what image you are showing (desktop / mobile ) and dimension
+  ☐ update the shre url to take in device type 
 
 TRELLO
 
   ✔ add a spinner when its taking snapshots @done (23-10-15 15:16)
 
 
+
+NOTES
+
+check if data has been stored 
+
+
+
+curl --request GET --url 'https://api.trello.com/1/cards/yhdRM96t/pluginData?key=c86b743cedafad2bf66b12783fa21a36&token=349322cf2003d2c10bbe963892d185fbdc0fab80275569e813656fe7bfd17816'
+
+
+curl --request GET --url 'https://api.trello.com/1/cards/Tmy81I77/pluginData?key=c86b743cedafad2bf66b12783fa21a36&token=ATTA2335ae7825ebbc5f622cfb249cd57b8e8df58cf251b53f0fb0611f6f0916ba4a234FB042'

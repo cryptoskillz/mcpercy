@@ -204,14 +204,12 @@ t.render(function() {
       //check if is set
       if ((controlURL != '') && (controlURL != undefined))
       {
-        alert('aaaaa')
         //show the control form
-        setForm(2);
+        setForm(2,controlURL);
         
       }
       else
       {
-        alert('dddd')
         //show the variant form
         setForm(1,controlURL);
         //document.getElementById('variantForm').style.display = '';
