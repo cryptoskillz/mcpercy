@@ -32,7 +32,7 @@ let setForm = (state) => {
   {
     document.getElementById('controlForm').style.display = 'none';
     document.getElementById('variantForm').style.display = '';
-    document.getElementById('controlURLSet').innerText = document.getElementById('controlURL').value;
+    document.getElementById('controlURLSet').innerText = "CONTROL:"+document.getElementById('controlURL').value;
   }
 
 }
@@ -56,6 +56,9 @@ let checkForm = (check) => {
 
 }
 
+/*
+this functon lets us run locally to make debugging easier.
+*/
 // Get the query string from the URL
 const queryString = window.location.search;
 // Create a URLSearchParams object from the query string
@@ -187,6 +190,8 @@ t.render(function() {
    return t
     .get("card", "shared", "controlURL")
     .then(function (controlURL) {
+      console.log(card)
+      console.log(controlURL)
       if ((controlURL != '') || (controlURL != undefined))
       {
         setForm('1');
