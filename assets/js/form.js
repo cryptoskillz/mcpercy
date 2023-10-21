@@ -9,10 +9,11 @@ let isURL = (str) => {
     return urlPattern.test(str);
 }
 
-// Function to update the div content
+//function to update the div content
 let updateDiv = () => {
-    // You can put any logic here to update the content
-    let theDiv = document.getElementById('processingdiv')
+    //logic  to update the content
+    let theDiv = document.getElementById('processingdiv');
+    //add a scroller
     if (theDiv.innerText != "Processing...")
         theDiv.innerText = theDiv.innerText + ".";
     else
