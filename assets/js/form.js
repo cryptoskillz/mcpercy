@@ -1,4 +1,5 @@
 var t = TrelloPowerUp.iframe();
+let isLocal=0;
 
 //check URL
 let isURL = (str) => {
@@ -53,6 +54,44 @@ let checkForm = (check) => {
             return (1); //true
         }
     }
+    if (check == 2) {
+        document.getElementById('variantError').innerText = ""
+        let alllowIt = 1;
+        if (isURL(document.getElementById('variantURL').value) == false) {
+            document.getElementById('variantError').innerText = "Please enter a valid URL!"
+            allowIt = 0;
+        }
+        if (document.getElementById('variantURL').value == document.getElementById('controlURL').value) {
+            document.getElementById('variantError').innerText = "URL's must be different"
+            allowIt = 0
+        }
+        return (alllowIt)
+
+    }
+}
+
+//take a snapshot
+//1 = control 
+//2 = variant
+let takeSnapshot = (state) => {
+  let snapshotAPI = 'https://mcpercy.pages.dev/';
+  let cardId = "aBFTnUXw"
+  if (isLocal == 1)
+    snapshotAPI = 'http://localhost:8789/';
+  else
+    cardId = t.getContext().card;
+  //get the control url
+  let theURL = document.getElementById('controlURL').value;
+  if (state == 2)
+    theURL = document.getElementById('variantURL').value;
+        //get the variant url 
+  const theMethod = `api/snapshot/?url=${theUrl}&state=${state}&device=${device}&cardid=${cardId}&requestor=1`;
+
+  //send the message if it is a state 2
+  if (state == 2)
+  {
+    //send message
+  }
 
 }
 
@@ -66,8 +105,11 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 //check if we are local and if so set it up 
 if (urlParams.has('local')) {
+    isLocal = 1;
     //debug set the control URL 
     document.getElementById("controlURL").value = "http://www.purdyandfigg.com";
+    document.getElementById("variantURL").value = "http://www.purdyandfigg.com";
+
     //set the variant URL;
     //let variantURL = "";
     if (document.getElementById("controlURL").value == "")
@@ -82,15 +124,18 @@ document.getElementById('snapControl').addEventListener("click", function() {
 });
 
 document.getElementById('snapVariant').addEventListener("click", function() {
-    return t
-        .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
-        .then(function() {
-            //add it the control text div
-            //show the variant div
-            //hide the control div
-            alert('snapshot')
-            //t.closePopup();
-        });
+
+    if (checkForm(2) == 1) {
+        return t
+            .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
+            .then(function() {
+                //add it the control text div
+                //show the variant div
+                //hide the control div
+                //alert('snapshot')
+                //t.closePopup();
+            });
+    }
 });
 
 
@@ -204,14 +249,14 @@ window.trelloform.addEventListener("submit", function(event) {
 
 //render function
 t.render(function() {
-  t.get("card", "shared", "variantURL")
-                    .then(function(variantURL) {
-                      console.log(variantURL)
-                        if ((variantURL != '') && (variantURL != undefined))
-                            document.getElementById("variantURL").value = variantURL
-                    })
+    //get the variant URL
+    t.get("card", "shared", "variantURL")
+        .then(function(variantURL) {
+            console.log(variantURL)
+            if ((variantURL != '') && (variantURL != undefined))
+                document.getElementById("variantURL").value = variantURL
+        })
     //check if we have a control URL
-
     return t
         .get("card", "shared", "controlURL")
         .then(function(controlURL) {
@@ -230,6 +275,6 @@ t.render(function() {
 
         })
         .then(function() {
-           // t.sizeTo("#estimate").done();
+            // t.sizeTo("#estimate").done();
         });
 });

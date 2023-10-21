@@ -9,7 +9,7 @@ let generateGuid = async () => {
 
 
 //call browersless 
-let getBrowserlessSnapshot = async (headlessUrl, cardid, width, height, agentName, URLtoImage, context, corv, device) => {
+let getBrowserlessSnapshot = async (headlessUrl, cardid, width, height, agentName, URLtoImage, context, controlOrVariant, device) => {
     const jsonData = {
         url: URLtoImage,
         "options": {
@@ -39,7 +39,7 @@ let getBrowserlessSnapshot = async (headlessUrl, cardid, width, height, agentNam
     const imageUint8Array = new Uint8Array(imageArrayBuffer);
     //save it to KV
     const KV = context.env.datastore
-    const kvId = `${cardid}-${device}-${corv}`;
+    const kvId = `${cardid}-${device}-${controlOrVariant}`;
     await KV.put(kvId, imageUint8Array);
 
 }
@@ -55,8 +55,9 @@ export async function onRequestGet(context) {
     } = context;
 
     const { searchParams } = new URL(request.url);
+    //why are we doing preview?
     //get the preview
-    const preview = searchParams.get('preview');
+    //const preview = searchParams.get('preview');
     const headlessUrl = `https://chrome.browserless.io/screenshot?token=${context.env.BROWSERLESSTOKEN}`;
     //get the front end
     //1 : trello
@@ -74,16 +75,14 @@ export async function onRequestGet(context) {
 
 
 
-    //get the control url 
-    const controlUrl = searchParams.get('control');
+    //get the url to snapshop
+    const theURL = searchParams.get('url');
     //get the variant url
-    const variantUrl = searchParams.get('variant');
+    const theState = searchParams.get('state');
     //get the device
     //1 = desktop
     //2 = iphone15
     const device = searchParams.get('device');
-    //se the share URL 
-    const shareURL = `${context.env.APPLICATIONURL}share?id=${cardid}-${device}`
     //set it to desktop
     //0 = disable
     //1 = browersless
@@ -103,9 +102,12 @@ export async function onRequestGet(context) {
     //use browerless
     if (snapShotEngine == 1) {
         //get the control snapshot
-        const res1 = await getBrowserlessSnapshot(headlessUrl, cardid, width, height, agentName, controlUrl, context, "control", device);
+        let controlOrVariant = "control"
+        if (theState == 2)
+            controlOrVariant = "variant"
+        const res1 = await getBrowserlessSnapshot(headlessUrl, cardid, width, height, agentName, theUrl, context, controlOrVariant, device);
         //get the variant snapshot
-        const res2 = await getBrowserlessSnapshot(headlessUrl, cardid, width, height, agentName, variantUrl, context, "variant", device);
+        //const res2 = await getBrowserlessSnapshot(headlessUrl, cardid, width, height, agentName, variantUrl, context, "variant", device);
     }
     //playwright
     if (snapShotEngine == 2) {
@@ -114,28 +116,33 @@ export async function onRequestGet(context) {
 
     if (requestor == 1) {
         //set the comment text
-        const commentText = `Your sweet sweet McCpercy comparison is here! ${shareURL}`;
-        //set the message
-        const theUrl = `https://api.trello.com/1/cards/${cardid}/actions/comments?text=${commentText}&key=${context.env.TRELLOKEY}&token=${context.env.TRELLOTOKEN}`
-        const response = await fetch(theUrl, {
-            method: 'POST',
-            headers: {
-                'Cache-Control': 'no-cache',
-                "Content-Type": "application/json",
-            }
-        });
+        //check if its a variant 
+        if (theState == 2) {
+            //se the share URL 
+            const shareURL = `${context.env.APPLICATIONURL}share?id=${cardid}-${device}`
+            //set he comment
+            const commentText = `Your sweet sweet McCpercy comparison is here! ${shareURL}`;
+            //set the message
+            const theUrl = `https://api.trello.com/1/cards/${cardid}/actions/comments?text=${commentText}&key=${context.env.TRELLOKEY}&token=${context.env.TRELLOTOKEN}`
+            //make the call
+            const response = await fetch(theUrl, {
+                method: 'POST',
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    "Content-Type": "application/json",
+                }
+            });
+        }
         return new Response(JSON.stringify("{ok}"), { status: 200 });
     }
 
     //to do shopify
-    if (requestor == 2)
-    {
+    if (requestor == 2) {
 
     }
     //to do plain html 
-    if (requestor == 3)
-    {
+    if (requestor == 3) {
         return new Response(JSON.stringify(`{url:${shareURL}}`), { status: 200 });
     }
-    
+
 }

@@ -53,7 +53,20 @@ let checkForm = (check) => {
             return (1); //true
         }
     }
+    if (check == 2) {
+        document.getElementById('variantError').innerText = ""
+        let alllowIt = 1;
+        if (isURL(document.getElementById('variantURL').value) == false) {
+            document.getElementById('variantError').innerText = "Please enter a valid URL!"
+            allowIt = 0;
+        }
+        if (document.getElementById('variantURL').value == document.getElementById('controlURL').value) {
+            document.getElementById('variantError').innerText = "URL's must be different"
+            allowIt = 0
+        }
+        return (alllowIt)
 
+    }
 }
 
 
@@ -68,6 +81,8 @@ const urlParams = new URLSearchParams(queryString);
 if (urlParams.has('local')) {
     //debug set the control URL 
     document.getElementById("controlURL").value = "http://www.purdyandfigg.com";
+    document.getElementById("variantURL").value = "http://www.purdyandfigg.com";
+
     //set the variant URL;
     //let variantURL = "";
     if (document.getElementById("controlURL").value == "")
@@ -82,15 +97,18 @@ document.getElementById('snapControl').addEventListener("click", function() {
 });
 
 document.getElementById('snapVariant').addEventListener("click", function() {
-    return t
-        .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
-        .then(function() {
-            //add it the control text div
-            //show the variant div
-            //hide the control div
-            alert('snapshot')
-            //t.closePopup();
-        });
+
+    if (checkForm(2) == 1) {
+        return t
+            .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
+            .then(function() {
+                //add it the control text div
+                //show the variant div
+                //hide the control div
+                //alert('snapshot')
+                //t.closePopup();
+            });
+    }
 });
 
 
@@ -204,14 +222,14 @@ window.trelloform.addEventListener("submit", function(event) {
 
 //render function
 t.render(function() {
-  t.get("card", "shared", "variantURL")
-                    .then(function(variantURL) {
-                      console.log(variantURL)
-                        if ((variantURL != '') && (variantURL != undefined))
-                            document.getElementById("variantURL").value = variantURL
-                    })
+    //get the variant URL
+    t.get("card", "shared", "variantURL")
+        .then(function(variantURL) {
+            console.log(variantURL)
+            if ((variantURL != '') && (variantURL != undefined))
+                document.getElementById("variantURL").value = variantURL
+        })
     //check if we have a control URL
-
     return t
         .get("card", "shared", "controlURL")
         .then(function(controlURL) {
@@ -230,6 +248,6 @@ t.render(function() {
 
         })
         .then(function() {
-           // t.sizeTo("#estimate").done();
+            // t.sizeTo("#estimate").done();
         });
 });
