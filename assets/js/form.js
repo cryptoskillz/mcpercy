@@ -19,13 +19,19 @@ let updateDiv = () => {
 }
 
 
+//function that checks for a control button being pressed
 document.getElementById('addControl').addEventListener('click', function() {
-  event.preventDefault();
+  //event.preventDefault();
+  //get the value
   let theControlURL = document.getElementById('controlURL').value;
   alert(theControlURL);
+  //set the control url
   return t
     .set("card", "shared", "controlURL", theControlURL)
     .then(function () {
+      //add it the control text div
+      //show the variant div
+      //hide the control div
       //t.closePopup();
     });
 });
@@ -124,7 +130,7 @@ t.render(function() {
    return t
     .get("card", "shared", "controlURL")
     .then(function (controlURL) {
-      if ((controlURL != '') && (controlURL != undefined))
+      if ((controlURL != '') || (controlURL != undefined))
       {
         document.getElementById('controlForm').style.display = '';
         window.controlURL.value = controlURL;  
