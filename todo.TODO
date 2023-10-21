@@ -1,8 +1,9 @@
 FORM JS
  ✔ pass vars in from form.js to snapshot.js @done (23-10-15 00:09)
- ☐ add the snapshot call back
- ☐ check the variant URL is a url
- ☐ check it is not the same as 
+ ✔ add the snapshot call back @done (23-10-21 22:38)
+ ✔ check the variant URL is a url @done (23-10-21 19:36)
+ ✔ check it is not the same as @done (23-10-21 19:36)
+ ✔ add processing ticker @done (23-10-21 22:38)
 
 SNAPSHOT.JS
  ✔ get the search parm vars @done (23-10-15 00:14)
@@ -10,13 +11,13 @@ SNAPSHOT.JS
  ✔ save in kv @done (23-10-15 00:35)
  ☐ we could make it show more than one and keep a history of images, maybe later (or this would be the paid part.)
  ☐ add device and desktop to the message that goes to trello
- ☐ add the device type we store in KV so mobile etc does not overwirte it.
+ ✔ add the device type we store in KV so mobile etc does not overwirte it. @done (23-10-21 22:38)
 
 
 SHARE
   ✔ move in the share code from imagesnapshot @done (23-10-15 02:34)
   ☐ show what image you are showing (desktop / mobile ) and dimension
-  ☐ update the shre url to take in device type 
+  ✔ update the shre url to take in device type @done (23-10-21 22:38)
 
 TRELLO
 
