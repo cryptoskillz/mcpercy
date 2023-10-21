@@ -110,7 +110,7 @@ let takeSnapshot = (state) => {
             // Handle the data from the response
             console.log('API Response:', data);
             clearInterval(intervalId);
-            return t.closePopup();
+            //return t.closePopup();
         })
         .catch(error => {
             // Handle errors during the fetch
@@ -146,6 +146,10 @@ if (urlParams.has('local')) {
 
 document.getElementById('snapControl').addEventListener("click", function() {
     takeSnapshot(1);
+    document.getElementById('controlForm').style.display = '';
+    document.getElementById('variantForm').style.display = '';
+    document.getElementById('processingdiv').style.display = 'none';
+
 });
 
 document.getElementById('snapVariant').addEventListener("click", function() {
@@ -155,12 +159,8 @@ document.getElementById('snapVariant').addEventListener("click", function() {
         return t
             .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
             .then(function() {
-                //add it the control text div
-                //show the variant div
-                //hide the control div
-                //alert('snapshot')
-
-                //t.closePopup();
+              //close the pop up
+              t.closePopup();
             });
     }
 });
@@ -185,7 +185,41 @@ document.getElementById('addControl').addEventListener('click', function() {
 
 
 
-//submit the form
+//render function
+t.render(function() {
+    //get the variant URL
+    t.get("card", "shared", "variantURL")
+        .then(function(variantURL) {
+            console.log(variantURL)
+            if ((variantURL != '') && (variantURL != undefined))
+                document.getElementById("variantURL").value = variantURL
+        })
+    //check if we have a control URL
+    return t
+        .get("card", "shared", "controlURL")
+        .then(function(controlURL) {
+            //console.log(card)
+            console.log(controlURL)
+            //check if is set
+            if ((controlURL != '') && (controlURL != undefined)) {
+                //show the control form
+                setForm(2, controlURL);
+
+            } else {
+                //show the variant form
+                setForm(1, controlURL);
+                //document.getElementById('variantForm').style.display = '';
+            }
+
+        })
+        .then(function() {
+            // t.sizeTo("#estimate").done();
+        });
+});
+
+
+
+//submit the form (old code)
 /*
 window.trelloform.addEventListener("submit", function(event) {
     // Stop the browser trying to submit the form itself.
@@ -273,35 +307,3 @@ window.trelloform.addEventListener("submit", function(event) {
 });
 
 */
-
-//render function
-t.render(function() {
-    //get the variant URL
-    t.get("card", "shared", "variantURL")
-        .then(function(variantURL) {
-            console.log(variantURL)
-            if ((variantURL != '') && (variantURL != undefined))
-                document.getElementById("variantURL").value = variantURL
-        })
-    //check if we have a control URL
-    return t
-        .get("card", "shared", "controlURL")
-        .then(function(controlURL) {
-            //console.log(card)
-            console.log(controlURL)
-            //check if is set
-            if ((controlURL != '') && (controlURL != undefined)) {
-                //show the control form
-                setForm(2, controlURL);
-
-            } else {
-                //show the variant form
-                setForm(1, controlURL);
-                //document.getElementById('variantForm').style.display = '';
-            }
-
-        })
-        .then(function() {
-            // t.sizeTo("#estimate").done();
-        });
-});
