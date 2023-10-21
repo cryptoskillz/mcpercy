@@ -110,7 +110,6 @@ let takeSnapshot = (state) => {
         .then(data => {
             // Handle the data from the response
             clearInterval(intervalId);
-            //return t.closePopup();
             if (state == 1) {
                 document.getElementById('controlForm').style.display = 'none';
                 document.getElementById('variantForm').style.display = '';
@@ -159,10 +158,6 @@ document.getElementById('snapVariant').addEventListener("click", function() {
         takeSnapshot(2);
         return t
             .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
-            .then(function() {
-                //close the pop up
-                t.closePopup();
-            });
     }
 });
 
