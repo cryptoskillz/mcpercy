@@ -186,19 +186,24 @@ window.trelloform.addEventListener("submit", function(event) {
 
 */
 
+//render function
 t.render(function() {
+    //check if we have a control URL
    return t
     .get("card", "shared", "controlURL")
     .then(function (controlURL) {
-      console.log(card)
-      console.log(controlURL)
-      if ((controlURL != '') || (controlURL != undefined))
+      //console.log(card)
+      //console.log(controlURL)
+      //check if is set
+      if ((controlURL != '') && (controlURL != undefined))
       {
+        //show the control form
         setForm('1');
         
       }
       else
       {
+        //show the variant form
         setForm('2');
         //document.getElementById('variantForm').style.display = '';
       }
