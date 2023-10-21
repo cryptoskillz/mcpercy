@@ -18,7 +18,35 @@ let updateDiv = () => {
       theDiv.innerText = "Processing";
 }
 
+let init = () => {
+  return t
+    .get("card", "shared", "controlURL")
+    .then(function (controlURL) {
+      alert(controlURL)
+      window.controlURL.value = controlURL;
+    })
+    .then(function () {
+      t.sizeTo("#estimate").done();
+    });
+}
+
+
+document.getElementById('addControl').addEventListener('click', function() {
+  event.preventDefault();
+  let theControlURL = document.getElementById('controlURL').value;
+  alert(theControlURL);
+  return t
+    .set("card", "shared", "controlURL", theControlURL)
+    .then(function () {
+      //t.closePopup();
+    });
+});
+
+init();
+
+
 //submit the form
+/*
 window.trelloform.addEventListener("submit", function(event) {
     // Stop the browser trying to submit the form itself.
     event.preventDefault();
@@ -76,7 +104,7 @@ window.trelloform.addEventListener("submit", function(event) {
         //get the device 
         let device = document.getElementById('device').value;
         //set the method
-        const theMethod = `api/snapshot/?control=${control}&variant=${variant}&device=${device}&cardid=${cardId}`;
+        const theMethod = `api/snapshot/?control=${control}&variant=${variant}&device=${device}&cardid=${cardId}&requestor=1`;
         //console.log(theMethod)
         //call it
         fetch(`${theUrl}${theMethod}`)
@@ -103,6 +131,10 @@ window.trelloform.addEventListener("submit", function(event) {
     }
 
 });
+
+*/
+
 t.render(function() {
+
     t.sizeTo("#trelloform").done();
 });

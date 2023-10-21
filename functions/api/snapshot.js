@@ -1,37 +1,47 @@
-//call browersless 
-let getBrowserlessSnapshot = async (headlessUrl,cardid,width,height,agentName,URLtoImage,context,corv,device) => {
-    const jsonData = {
-            url: URLtoImage,
-            "options": {
-                "fullPage": true
-            },
-            "gotoOptions": {
-                "waitUntil": "networkidle2",
-            },
-            viewport: {
-                width: width,
-                height: height,
-            }
-        };
-        //make the call
-        const response = await fetch(headlessUrl, {
-            method: 'POST',
-            headers: {
-                'Cache-Control': 'no-cache',
-                "Content-Type": "application/json",
-                'User-Agent': agentName
-            },
-            body: JSON.stringify(jsonData)
-        });
+let generateGuid = async () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (Math.random() * 16) | 0,
+            v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
+}
 
-        //get the repsonse
-        const imageArrayBuffer = await response.arrayBuffer();
-        const imageUint8Array = new Uint8Array(imageArrayBuffer);
-        //save it to KV
-        const KV = context.env.datastore
-        const kvId = `${cardid}-${device}-${corv}`;
-        await KV.put(kvId, imageUint8Array);
-        
+
+
+//call browersless 
+let getBrowserlessSnapshot = async (headlessUrl, cardid, width, height, agentName, URLtoImage, context, corv, device) => {
+    const jsonData = {
+        url: URLtoImage,
+        "options": {
+            "fullPage": true
+        },
+        "gotoOptions": {
+            "waitUntil": "networkidle2",
+        },
+        viewport: {
+            width: width,
+            height: height,
+        }
+    };
+    //make the call
+    const response = await fetch(headlessUrl, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            "Content-Type": "application/json",
+            'User-Agent': agentName
+        },
+        body: JSON.stringify(jsonData)
+    });
+
+    //get the repsonse
+    const imageArrayBuffer = await response.arrayBuffer();
+    const imageUint8Array = new Uint8Array(imageArrayBuffer);
+    //save it to KV
+    const KV = context.env.datastore
+    const kvId = `${cardid}-${device}-${corv}`;
+    await KV.put(kvId, imageUint8Array);
+
 }
 export async function onRequestGet(context) {
     //build the paramaters
@@ -44,13 +54,26 @@ export async function onRequestGet(context) {
         data, // arbitrary space for passing data between middlewares
     } = context;
 
-     const { searchParams } = new URL(request.url);
-        //get the preview
-        const preview = searchParams.get('preview');
-
+    const { searchParams } = new URL(request.url);
+    //get the preview
+    const preview = searchParams.get('preview');
     const headlessUrl = `https://chrome.browserless.io/screenshot?token=${context.env.BROWSERLESSTOKEN}`;
-    //get the card id 
-    const cardid = searchParams.get('cardid');
+    //get the front end
+    //1 : trello
+    //2 : Shopify
+    //3 : html
+    const requestor = searchParams.get('requestor');
+    let cardid = "";
+    if (requestor == 1) {
+        //get the card id 
+        cardid = searchParams.get('cardid');
+    } else {
+        //random-string
+        cardid = await generateGuid();
+    }
+
+
+
     //get the control url 
     const controlUrl = searchParams.get('control');
     //get the variant url
@@ -59,8 +82,9 @@ export async function onRequestGet(context) {
     //1 = desktop
     //2 = iphone15
     const device = searchParams.get('device');
+    //se the share URL 
+    const shareURL = `${context.env.APPLICATIONURL}share?id=${cardid}-${device}`
     //set it to desktop
-
     //0 = disable
     //1 = browersless
     //2 = playright
@@ -79,26 +103,39 @@ export async function onRequestGet(context) {
     //use browerless
     if (snapShotEngine == 1) {
         //get the control snapshot
-        const res1 = await getBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,controlUrl,context,"control",device);
+        const res1 = await getBrowserlessSnapshot(headlessUrl, cardid, width, height, agentName, controlUrl, context, "control", device);
         //get the variant snapshot
-        const res2 = await getBrowserlessSnapshot(headlessUrl,cardid,width,height,agentName,variantUrl,context,"variant",device);
+        const res2 = await getBrowserlessSnapshot(headlessUrl, cardid, width, height, agentName, variantUrl, context, "variant", device);
     }
     //playwright
     if (snapShotEngine == 2) {
 
     }
-    const theId = `${cardid}-${device}`;
-    //set the comment text
-    const commentText = `Your sweet sweet McCpercy comparison is here!!! ${context.env.APPLICATIONURL}share?id=${theId}`;
 
-    //set the message
-    const theUrl = `https://api.trello.com/1/cards/${cardid}/actions/comments?text=${commentText}&key=${context.env.TRELLOKEY}&token=${context.env.TRELLOTOKEN}`
-    const response = await fetch(theUrl, {
-        method: 'POST',
-        headers: {
-            'Cache-Control': 'no-cache',
-            "Content-Type": "application/json",
-        }
-    });
-    return new Response(JSON.stringify("{ok}"), { status: 200 });
+    if (requestor == 1) {
+        //set the comment text
+        const commentText = `Your sweet sweet McCpercy comparison is here! ${shareURL}`;
+        //set the message
+        const theUrl = `https://api.trello.com/1/cards/${cardid}/actions/comments?text=${commentText}&key=${context.env.TRELLOKEY}&token=${context.env.TRELLOTOKEN}`
+        const response = await fetch(theUrl, {
+            method: 'POST',
+            headers: {
+                'Cache-Control': 'no-cache',
+                "Content-Type": "application/json",
+            }
+        });
+        return new Response(JSON.stringify("{ok}"), { status: 200 });
+    }
+
+    //to do shopify
+    if (requestor == 2)
+    {
+
+    }
+    //to do plain html 
+    if (requestor == 3)
+    {
+        return new Response(JSON.stringify(`{url:${shareURL}}`), { status: 200 });
+    }
+    
 }
