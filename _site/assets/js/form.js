@@ -13,33 +13,30 @@ let updateDiv = () => {
     // You can put any logic here to update the content
     let theDiv = document.getElementById('processingdiv')
     if (theDiv.innerText != "Processing...")
-      theDiv.innerText = theDiv.innerText+".";
+        theDiv.innerText = theDiv.innerText + ".";
     else
-      theDiv.innerText = "Processing";
+        theDiv.innerText = "Processing";
 }
 
 //set the state of the form
 //1 = control form
 //2 = variant form 
-let setForm = (state,theUrl="") => {
-  //show the control form
-  if (state == 1)
-  {
-    document.getElementById('variantForm').style.display = 'none';
-    document.getElementById('controlForm').style.display = '';
-  }
-  else
-  {
-    //show the variant form
-    //hide the control form
-    document.getElementById('controlForm').style.display = 'none';
-    //show the varaint form
-    document.getElementById('variantForm').style.display = '';
-    //set the control URL
-    document.getElementById('controlURLSet').innerText = theUrl;
-    //set the control URL
-    document.getElementById('controlURL').value = theUrl;
-  }
+let setForm = (state, theUrl = "") => {
+    //show the control form
+    if (state == 1) {
+        document.getElementById('variantForm').style.display = 'none';
+        document.getElementById('controlForm').style.display = '';
+    } else {
+        //show the variant form
+        //hide the control form
+        document.getElementById('controlForm').style.display = 'none';
+        //show the varaint form
+        document.getElementById('variantForm').style.display = '';
+        //set the control URL
+        document.getElementById('controlURLSet').innerText = theUrl;
+        //set the control URL
+        document.getElementById('controlURL').value = theUrl;
+    }
 
 }
 
@@ -47,18 +44,15 @@ let setForm = (state,theUrl="") => {
 //1 = control form 
 //2 = variant form
 let checkForm = (check) => {
-  if (check == 1)
-  {
-    document.getElementById('controlError').innerText = "";
-    if (isURL(document.getElementById('controlURL').value)  ==false) {
-        document.getElementById('controlError').innerText = "Please enter a valid URL"
-        return(0); //false
+    if (check == 1) {
+        document.getElementById('controlError').innerText = "";
+        if (isURL(document.getElementById('controlURL').value) == false) {
+            document.getElementById('controlError').innerText = "Please enter a valid URL"
+            return (0); //false
+        } else {
+            return (1); //true
+        }
     }
-    else
-    {
-      return(1); //true
-    }
-  }
 
 }
 
@@ -72,34 +66,49 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 //check if we are local and if so set it up 
 if (urlParams.has('local')) {
-  //debug set the control URL 
-  document.getElementById("controlURL").value = "http://www.purdyandfigg.com";
-  //set the variant URL;
-  //let variantURL = "";
-  if (document.getElementById("controlURL").value  == "")
-    setForm(1)
-  else
-    setForm(2,document.getElementById("controlURL").value)
- } 
+    //debug set the control URL 
+    document.getElementById("controlURL").value = "http://www.purdyandfigg.com";
+    //set the variant URL;
+    //let variantURL = "";
+    if (document.getElementById("controlURL").value == "")
+        setForm(1)
+    else
+        setForm(2, document.getElementById("controlURL").value)
+}
 
+
+document.getElementById('snapControl').addEventListener("click", function() {
+    alert('control clicked')
+});
+
+document.getElementById('snapVariant').addEventListener("click", function() {
+    return t
+        .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
+        .then(function() {
+            //add it the control text div
+            //show the variant div
+            //hide the control div
+            alert('snapshot')
+            //t.closePopup();
+        });
+});
 
 
 //function that checks for a control button being pressed
 document.getElementById('addControl').addEventListener('click', function() {
-  if (checkForm(1) == 1)
-  {
-  //event.preventDefault();
-  //set the control url
-  return t
-    .set("card", "shared", "controlURL", document.getElementById('controlURL').value)
-    .then(function () {
-      //add it the control text div
-      //show the variant div
-      //hide the control div
-      setForm(2);
-      //t.closePopup();
-    });
-  }
+    if (checkForm(1) == 1) {
+        //event.preventDefault();
+        //set the control url
+        return t
+            .set("card", "shared", "controlURL", document.getElementById('controlURL').value)
+            .then(function() {
+                //add it the control text div
+                //show the variant div
+                //hide the control div
+                setForm(2);
+                //t.closePopup();
+            });
+    }
 });
 
 
@@ -196,29 +205,30 @@ window.trelloform.addEventListener("submit", function(event) {
 //render function
 t.render(function() {
     //check if we have a control URL
-   return t
-    .get("card", "shared", "controlURL")
-    .then(function (controlURL) {
-      //console.log(card)
-      console.log(controlURL)
-      //check if is set
-      if ((controlURL != '') && (controlURL != undefined))
-      {
-        alert('aaaaa')
-        //show the control form
-        setForm(2);
-        
-      }
-      else
-      {
-        alert('dddd')
-        //show the variant form
-        setForm(1,controlURL);
-        //document.getElementById('variantForm').style.display = '';
-      }
-      
-    })
-    .then(function () {
-      //t.sizeTo("#estimate").done();
-    });
+    return t
+        .get("card", "shared", "controlURL")
+        .then(function(controlURL) {
+            //console.log(card)
+            console.log(controlURL)
+            //check if is set
+            if ((controlURL != '') && (controlURL != undefined)) {
+                //show the control form
+                setForm(2, controlURL);
+
+            } else {
+                //show the variant form
+                setForm(1, controlURL);
+                t.get("card", "shared", "variantURL")
+                    .then(function(variantURL) {
+                      console.log(variantURL)
+                        if ((variantURL != '') && (variantURL != undefined))
+                            document.getElementById("controlURL").variantURL = variantURL
+                    })
+                //document.getElementById('variantForm').style.display = '';
+            }
+
+        })
+        .then(function() {
+            t.sizeTo("#estimate").done();
+        });
 });
