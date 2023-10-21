@@ -193,7 +193,7 @@ t.render(function() {
     .get("card", "shared", "controlURL")
     .then(function (controlURL) {
       //console.log(card)
-      //console.log(controlURL)
+      console.log(controlURL)
       //check if is set
       if ((controlURL != '') && (controlURL != undefined))
       {
