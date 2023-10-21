@@ -71,22 +71,44 @@ let checkForm = (check) => {
     }
 }
 
+//this function shows a confirmation dialog
+let showConfirmDialog = (state) => {
+    //build the message
+    var theMessage = `This will replace the current control snapshot (if one exists)`;
+    //check if it is the variant
+    if (state == 2)
+        theMessage = `This will replace the current variant snapshot (if one exists)`;
+    //confirmation message
+    var result = confirm(theMessage);
+    if (result)
+        return (1)
+    else
+        return (0)
+
+}
+
 //take a snapshot
 //1 = control 
 //2 = variant
 let takeSnapshot = (state) => {
+    //show the current form
     document.getElementById('controlForm').style.display = 'none';
     document.getElementById('variantForm').style.display = 'none';
     document.getElementById('processingdiv').style.display = '';
+    //set the processing timer
     var intervalId = setInterval(updateDiv, 1000);
+    //sett the api url
     let snapshotAPI = 'https://mcpercy.pages.dev/';
-    let cardId = "aBFTnUXw"
+    //set default card id
+    let cardId = "aBFTnUXw";
+    //check if we are local and change the API url
     if (isLocal == 1)
-        snapshotAPI = 'http://localhost:8789/';
+        snapshotAPI = 'http://localhost:8789/'; 
     else
-        cardId = t.getContext().card;
+        cardId = t.getContext().card; //get the card id
     //get the control url
     let theURL = document.getElementById('controlURL').value;
+    //check variant
     if (state == 2)
         theURL = document.getElementById('variantURL').value;
     //get the device 
@@ -147,17 +169,25 @@ if (urlParams.has('local')) {
 }
 
 
+//this function process the control snapshot
 document.getElementById('snapControl').addEventListener("click", function() {
-    takeSnapshot(1);
-
+    //show the confirm dialog
+    if (showConfirmDialog(1) == 1)
+        takeSnapshot(1);
 });
 
+//this function processes the variant snapshot
 document.getElementById('snapVariant').addEventListener("click", function() {
-
-    if (checkForm(2) == 1) {
-        takeSnapshot(2);
-        return t
-            .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
+    //show the confirm dialog
+    if (showConfirmDialog(2) == 1) {
+        //check the form
+        if (checkForm(2) == 1) {
+            //take a snapshot
+            takeSnapshot(2);
+            //store the variant URL
+            return t
+                .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
+        }
     }
 });
 
@@ -165,16 +195,12 @@ document.getElementById('snapVariant').addEventListener("click", function() {
 //function that checks for a control button being pressed
 document.getElementById('addControl').addEventListener('click', function() {
     if (checkForm(1) == 1) {
-        //event.preventDefault();
         //set the control url
         return t
             .set("card", "shared", "controlURL", document.getElementById('controlURL').value)
             .then(function() {
-                //add it the control text div
-                //show the variant div
-                //hide the control div
+                //set the form
                 setForm(2);
-                //t.closePopup();
             });
     }
 });
@@ -209,94 +235,3 @@ t.render(function() {
             // t.sizeTo("#estimate").done();
         });
 });
-
-
-
-//submit the form (old code)
-/*
-window.trelloform.addEventListener("submit", function(event) {
-    // Stop the browser trying to submit the form itself.
-    event.preventDefault();
-    //check all the fields are done.
-    const control = document.getElementById('control').value;
-    const variant = document.getElementById('variant').value;
-    //reset the errors
-    document.getElementById('controlError').innerText = ""
-    document.getElementById('variantError').innerText = ""
-    document.getElementById('errorDiv').innerText = ""
-    //set an allow var
-    let allowIt = 1;
-    //check if the control is a URL
-    if (isURL(control)  ==false) {
-        allowIt = 0;
-        document.getElementById('controlError').innerText = "Please enter a valid URL"
-    }
-    //check if the variant is a URL
-    if (isURL(variant) == false ) {
-        allowIt = 0;
-        document.getElementById('variantError').innerText = "Please enter a valid URL"
-
-    }
-    //check the URL's do not match
-    if (control == variant) {
-        allowIt = 0;
-        document.getElementById('errorDiv').innerText = "URL's must be different"
-    }
-
-    //check to see if we want to call the snapshop API
-    if (allowIt == 1) {
-        //show the processing class. 
-        document.getElementById('formdiv').style.display = 'none';
-        document.getElementById('processingdiv').style.display = '';
-        // Update the div every second
-         var intervalId = setInterval(updateDiv, 1000);
-        //set card id to a test one for well you know testing purposes
-        let cardId = "aBFTnUXw"
-        //set a url var
-        let theUrl = "";
-        //check if its localhost
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            theUrl = `http://localhost:8789/`
-        } else {
-            theUrl = 'https://mcpercy.pages.dev/'
-            //get the card id
-            cardId = t.getContext().card;
-
-        }
-
-        //get the control url
-        let control = document.getElementById('control').value;
-        //get the variant url 
-        let variant = document.getElementById('variant').value;
-        //get the device 
-        let device = document.getElementById('device').value;
-        //set the method
-        const theMethod = `api/snapshot/?control=${control}&variant=${variant}&device=${device}&cardid=${cardId}&requestor=1`;
-        //console.log(theMethod)
-        //call it
-        fetch(`${theUrl}${theMethod}`)
-            .then(response => {
-                // Check if the request was successful (status code 200-299)
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                // Parse the JSON in the response
-                clearInterval(intervalId);
-                return response.json();
-            })
-            .then(data => {
-                // Handle the data from the response
-                console.log('API Response:', data);
-                clearInterval(intervalId);
-                return t.closePopup();
-            })
-            .catch(error => {
-                // Handle errors during the fetch
-                clearInterval(intervalId);
-                console.error('Error:', error);
-            });
-    }
-
-});
-
-*/
