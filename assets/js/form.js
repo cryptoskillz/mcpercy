@@ -1,5 +1,5 @@
 var t = TrelloPowerUp.iframe();
-let isLocal=0;
+let isLocal = 0;
 
 //check URL
 let isURL = (str) => {
@@ -74,24 +74,49 @@ let checkForm = (check) => {
 //1 = control 
 //2 = variant
 let takeSnapshot = (state) => {
-  let snapshotAPI = 'https://mcpercy.pages.dev/';
-  let cardId = "aBFTnUXw"
-  if (isLocal == 1)
-    snapshotAPI = 'http://localhost:8789/';
-  else
-    cardId = t.getContext().card;
-  //get the control url
-  let theURL = document.getElementById('controlURL').value;
-  if (state == 2)
-    theURL = document.getElementById('variantURL').value;
-        //get the variant url 
-  const theMethod = `api/snapshot/?url=${theUrl}&state=${state}&device=${device}&cardid=${cardId}&requestor=1`;
-
-  //send the message if it is a state 2
-  if (state == 2)
-  {
-    //send message
-  }
+    document.getElementById('controlForm').style.display = 'none';
+    document.getElementById('variantForm').style.display = 'none';
+    document.getElementById('processingdiv').style.display = '';
+    var intervalId = setInterval(updateDiv, 1000);
+    let snapshotAPI = 'https://mcpercy.pages.dev/';
+    let cardId = "aBFTnUXw"
+    if (isLocal == 1)
+        snapshotAPI = 'http://localhost:8789/';
+    else
+        cardId = t.getContext().card;
+    //get the control url
+    let theURL = document.getElementById('controlURL').value;
+    if (state == 2)
+        theURL = document.getElementById('variantURL').value;
+    //get the device 
+    let device = document.getElementById('device').value;
+    //as we add more device it we will update the device check
+    if (device == 1)
+      device = "desktop"
+    //get the variant url 
+    const theMethod = `api/snapshot/?url=${theURL}&state=${state}&device=${device}&cardid=${cardId}&requestor=1`;
+    //call it
+    fetch(`${snapshotAPI}${theMethod}`)
+        .then(response => {
+            // Check if the request was successful (status code 200-299)
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // Parse the JSON in the response
+            clearInterval(intervalId);
+            return response.json();
+        })
+        .then(data => {
+            // Handle the data from the response
+            console.log('API Response:', data);
+            clearInterval(intervalId);
+            return t.closePopup();
+        })
+        .catch(error => {
+            // Handle errors during the fetch
+            clearInterval(intervalId);
+            console.error('Error:', error);
+        });
 
 }
 
@@ -120,12 +145,13 @@ if (urlParams.has('local')) {
 
 
 document.getElementById('snapControl').addEventListener("click", function() {
-    alert('control clicked')
+    takeSnapshot(1);
 });
 
 document.getElementById('snapVariant').addEventListener("click", function() {
 
     if (checkForm(2) == 1) {
+        takeSnapshot(2);
         return t
             .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
             .then(function() {
@@ -133,6 +159,7 @@ document.getElementById('snapVariant').addEventListener("click", function() {
                 //show the variant div
                 //hide the control div
                 //alert('snapshot')
+
                 //t.closePopup();
             });
     }

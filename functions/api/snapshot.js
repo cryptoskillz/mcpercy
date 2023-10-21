@@ -92,7 +92,7 @@ export async function onRequestGet(context) {
     let height = 1920;
     let agentName = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
     //check id we want to chnage it
-    if (device == 2) {
+    if (device == "iphone") {
         snapShotEngine = 2;
         width = 390;
         height = 884;
@@ -105,7 +105,7 @@ export async function onRequestGet(context) {
         let controlOrVariant = "control"
         if (theState == 2)
             controlOrVariant = "variant"
-        const res1 = await getBrowserlessSnapshot(headlessUrl, cardid, width, height, agentName, theUrl, context, controlOrVariant, device);
+        const res1 = await getBrowserlessSnapshot(headlessUrl, cardid, width, height, agentName, theURL, context, controlOrVariant, device);
         //get the variant snapshot
         //const res2 = await getBrowserlessSnapshot(headlessUrl, cardid, width, height, agentName, variantUrl, context, "variant", device);
     }
