@@ -56,7 +56,7 @@ let checkForm = (check) => {
     }
     if (check == 2) {
         document.getElementById('variantError').innerText = ""
-        let alllowIt = 1;
+        let allowIt = 1;
         if (isURL(document.getElementById('variantURL').value) == false) {
             document.getElementById('variantError').innerText = "Please enter a valid URL!"
             allowIt = 0;
@@ -65,7 +65,7 @@ let checkForm = (check) => {
             document.getElementById('variantError').innerText = "URL's must be different"
             allowIt = 0
         }
-        return (alllowIt)
+        return (allowIt)
 
     }
 }
@@ -92,7 +92,7 @@ let takeSnapshot = (state) => {
     let device = document.getElementById('device').value;
     //as we add more device it we will update the device check
     if (device == 1)
-      device = "desktop"
+        device = "desktop"
     //get the variant url 
     const theMethod = `api/snapshot/?url=${theURL}&state=${state}&device=${device}&cardid=${cardId}&requestor=1`;
     //call it
@@ -108,9 +108,15 @@ let takeSnapshot = (state) => {
         })
         .then(data => {
             // Handle the data from the response
-            console.log('API Response:', data);
             clearInterval(intervalId);
-            return t.closePopup();
+            //return t.closePopup();
+            if (state == 1) {
+                document.getElementById('controlForm').style.display = 'none';
+                document.getElementById('variantForm').style.display = '';
+                document.getElementById('processingdiv').style.display = 'none';
+            }
+            if (state == 2)
+                return t.closePopup();
         })
         .catch(error => {
             // Handle errors during the fetch
@@ -146,21 +152,19 @@ if (urlParams.has('local')) {
 
 document.getElementById('snapControl').addEventListener("click", function() {
     takeSnapshot(1);
+
 });
 
 document.getElementById('snapVariant').addEventListener("click", function() {
 
     if (checkForm(2) == 1) {
+      alert('ddd')
         takeSnapshot(2);
         return t
             .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
             .then(function() {
-                //add it the control text div
-                //show the variant div
-                //hide the control div
-                //alert('snapshot')
-
-                //t.closePopup();
+                //close the pop up
+                t.closePopup();
             });
     }
 });
@@ -185,7 +189,38 @@ document.getElementById('addControl').addEventListener('click', function() {
 
 
 
-//submit the form
+//render function
+t.render(function() {
+    //get the variant URL
+    t.get("card", "shared", "variantURL")
+        .then(function(variantURL) {
+            if ((variantURL != '') && (variantURL != undefined))
+                document.getElementById("variantURL").value = variantURL
+        })
+    //check if we have a control URL
+    return t
+        .get("card", "shared", "controlURL")
+        .then(function(controlURL) {
+            //check if is set
+            if ((controlURL != '') && (controlURL != undefined)) {
+                //show the control form
+                setForm(2, controlURL);
+
+            } else {
+                //show the variant form
+                setForm(1, controlURL);
+                //document.getElementById('variantForm').style.display = '';
+            }
+
+        })
+        .then(function() {
+            // t.sizeTo("#estimate").done();
+        });
+});
+
+
+
+//submit the form (old code)
 /*
 window.trelloform.addEventListener("submit", function(event) {
     // Stop the browser trying to submit the form itself.
@@ -273,35 +308,3 @@ window.trelloform.addEventListener("submit", function(event) {
 });
 
 */
-
-//render function
-t.render(function() {
-    //get the variant URL
-    t.get("card", "shared", "variantURL")
-        .then(function(variantURL) {
-            console.log(variantURL)
-            if ((variantURL != '') && (variantURL != undefined))
-                document.getElementById("variantURL").value = variantURL
-        })
-    //check if we have a control URL
-    return t
-        .get("card", "shared", "controlURL")
-        .then(function(controlURL) {
-            //console.log(card)
-            console.log(controlURL)
-            //check if is set
-            if ((controlURL != '') && (controlURL != undefined)) {
-                //show the control form
-                setForm(2, controlURL);
-
-            } else {
-                //show the variant form
-                setForm(1, controlURL);
-                //document.getElementById('variantForm').style.display = '';
-            }
-
-        })
-        .then(function() {
-            // t.sizeTo("#estimate").done();
-        });
-});

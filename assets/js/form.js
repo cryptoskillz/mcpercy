@@ -56,7 +56,7 @@ let checkForm = (check) => {
     }
     if (check == 2) {
         document.getElementById('variantError').innerText = ""
-        let alllowIt = 1;
+        let allowIt = 1;
         if (isURL(document.getElementById('variantURL').value) == false) {
             document.getElementById('variantError').innerText = "Please enter a valid URL!"
             allowIt = 0;
@@ -65,7 +65,7 @@ let checkForm = (check) => {
             document.getElementById('variantError').innerText = "URL's must be different"
             allowIt = 0
         }
-        return (alllowIt)
+        return (allowIt)
 
     }
 }
@@ -92,7 +92,7 @@ let takeSnapshot = (state) => {
     let device = document.getElementById('device').value;
     //as we add more device it we will update the device check
     if (device == 1)
-      device = "desktop"
+        device = "desktop"
     //get the variant url 
     const theMethod = `api/snapshot/?url=${theURL}&state=${state}&device=${device}&cardid=${cardId}&requestor=1`;
     //call it
@@ -108,9 +108,15 @@ let takeSnapshot = (state) => {
         })
         .then(data => {
             // Handle the data from the response
-            console.log('API Response:', data);
             clearInterval(intervalId);
             //return t.closePopup();
+            if (state == 1) {
+                document.getElementById('controlForm').style.display = 'none';
+                document.getElementById('variantForm').style.display = '';
+                document.getElementById('processingdiv').style.display = 'none';
+            }
+            if (state == 2)
+                return t.closePopup();
         })
         .catch(error => {
             // Handle errors during the fetch
@@ -134,9 +140,6 @@ if (urlParams.has('local')) {
     //debug set the control URL 
     document.getElementById("controlURL").value = "http://www.purdyandfigg.com";
     document.getElementById("variantURL").value = "http://www.purdyandfigg.com";
-
-    //set the variant URL;
-    //let variantURL = "";
     if (document.getElementById("controlURL").value == "")
         setForm(1)
     else
@@ -146,9 +149,6 @@ if (urlParams.has('local')) {
 
 document.getElementById('snapControl').addEventListener("click", function() {
     takeSnapshot(1);
-    document.getElementById('controlForm').style.display = '';
-    document.getElementById('variantForm').style.display = '';
-    document.getElementById('processingdiv').style.display = 'none';
 
 });
 
@@ -159,8 +159,8 @@ document.getElementById('snapVariant').addEventListener("click", function() {
         return t
             .set("card", "shared", "variantURL", document.getElementById('variantURL').value)
             .then(function() {
-              //close the pop up
-              t.closePopup();
+                //close the pop up
+                t.closePopup();
             });
     }
 });
@@ -190,7 +190,6 @@ t.render(function() {
     //get the variant URL
     t.get("card", "shared", "variantURL")
         .then(function(variantURL) {
-            console.log(variantURL)
             if ((variantURL != '') && (variantURL != undefined))
                 document.getElementById("variantURL").value = variantURL
         })
@@ -198,8 +197,6 @@ t.render(function() {
     return t
         .get("card", "shared", "controlURL")
         .then(function(controlURL) {
-            //console.log(card)
-            console.log(controlURL)
             //check if is set
             if ((controlURL != '') && (controlURL != undefined)) {
                 //show the control form
