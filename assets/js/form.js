@@ -199,14 +199,14 @@ t.render(function() {
       {
         alert('aaaaa')
         //show the control form
-        setForm(1);
+        setForm(2);
         
       }
       else
       {
         alert('dddd')
         //show the variant form
-        setForm(2);
+        setForm(1);
         //document.getElementById('variantForm').style.display = '';
       }
       
