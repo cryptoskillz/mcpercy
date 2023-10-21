@@ -30,8 +30,6 @@ document.getElementById('addControl').addEventListener('click', function() {
     });
 });
 
-init();
-
 
 //submit the form
 /*
