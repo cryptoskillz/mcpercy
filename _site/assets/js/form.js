@@ -222,13 +222,13 @@ t.render(function() {
                     .then(function(variantURL) {
                       console.log(variantURL)
                         if ((variantURL != '') && (variantURL != undefined))
-                            document.getElementById("controlURL").variantURL = variantURL
+                            document.getElementById("variantURL").value = variantURL
                     })
                 //document.getElementById('variantForm').style.display = '';
             }
 
         })
         .then(function() {
-            t.sizeTo("#estimate").done();
+           // t.sizeTo("#estimate").done();
         });
 });
