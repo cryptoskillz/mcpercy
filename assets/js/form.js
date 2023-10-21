@@ -197,14 +197,16 @@ t.render(function() {
       //check if is set
       if ((controlURL != '') && (controlURL != undefined))
       {
+        alert('aaaaa')
         //show the control form
-        setForm('1');
+        setForm(1);
         
       }
       else
       {
+        alert('dddd')
         //show the variant form
-        setForm('2');
+        setForm(2);
         //document.getElementById('variantForm').style.display = '';
       }
       
