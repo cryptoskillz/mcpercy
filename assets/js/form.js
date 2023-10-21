@@ -124,7 +124,16 @@ t.render(function() {
    return t
     .get("card", "shared", "controlURL")
     .then(function (controlURL) {
-      window.controlURL.value = controlURL;
+      if ((controlURL != '') && (controlURL != undefined))
+      {
+        document.getElementById('controlForm').style.display = '';
+        window.controlURL.value = controlURL;  
+      }
+      else
+      {
+        document.getElementById('variantForm').style.display = '';
+      }
+      
     })
     .then(function () {
       //t.sizeTo("#estimate").done();

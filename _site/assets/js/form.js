@@ -18,18 +18,6 @@ let updateDiv = () => {
       theDiv.innerText = "Processing";
 }
 
-let init = () => {
-  return t
-    .get("card", "shared", "controlURL")
-    .then(function (controlURL) {
-      alert(controlURL)
-      window.controlURL.value = controlURL;
-    })
-    .then(function () {
-      t.sizeTo("#estimate").done();
-    });
-}
-
 
 document.getElementById('addControl').addEventListener('click', function() {
   event.preventDefault();
@@ -41,8 +29,6 @@ document.getElementById('addControl').addEventListener('click', function() {
       //t.closePopup();
     });
 });
-
-init();
 
 
 //submit the form
@@ -135,6 +121,12 @@ window.trelloform.addEventListener("submit", function(event) {
 */
 
 t.render(function() {
-
-    t.sizeTo("#trelloform").done();
+   return t
+    .get("card", "shared", "controlURL")
+    .then(function (controlURL) {
+      window.controlURL.value = controlURL;
+    })
+    .then(function () {
+      //t.sizeTo("#estimate").done();
+    });
 });
