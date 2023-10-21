@@ -204,7 +204,14 @@ window.trelloform.addEventListener("submit", function(event) {
 
 //render function
 t.render(function() {
+  t.get("card", "shared", "variantURL")
+                    .then(function(variantURL) {
+                      console.log(variantURL)
+                        if ((variantURL != '') && (variantURL != undefined))
+                            document.getElementById("variantURL").value = variantURL
+                    })
     //check if we have a control URL
+
     return t
         .get("card", "shared", "controlURL")
         .then(function(controlURL) {
@@ -218,12 +225,6 @@ t.render(function() {
             } else {
                 //show the variant form
                 setForm(1, controlURL);
-                t.get("card", "shared", "variantURL")
-                    .then(function(variantURL) {
-                      console.log(variantURL)
-                        if ((variantURL != '') && (variantURL != undefined))
-                            document.getElementById("variantURL").value = variantURL
-                    })
                 //document.getElementById('variantForm').style.display = '';
             }
 
