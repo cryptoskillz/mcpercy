@@ -5,6 +5,8 @@ FORM JS
  ✔ check it is not the same as @done (23-10-21 19:36)
  ✔ add processing ticker @done (23-10-21 22:38)
  ☐ store the share URL in the trello card and show it under the variant button
+ ✔ switch the checkform / confirm message switch @done (23-10-22 00:15)
+
 
 SNAPSHOT.JS
  ✔ get the search parm vars @done (23-10-15 00:14)

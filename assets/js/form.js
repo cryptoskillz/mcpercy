@@ -1,5 +1,9 @@
 var t = TrelloPowerUp.iframe();
 let isLocal = 0;
+//sett the api url
+let snapshotAPI = 'https://mcpercy.pages.dev/';
+//set default card id
+let cardId = "Tmy81I77";
 
 //check URL
 let isURL = (str) => {
@@ -38,6 +42,15 @@ let setForm = (state, theUrl = "") => {
         document.getElementById('controlURLSet').innerText = theUrl;
         //set the control URL
         document.getElementById('controlURL').value = theUrl;
+        //check if we are local and change the API url
+        if (isLocal == 1)
+            snapshotAPI = 'http://localhost:8789/';
+        else
+            cardId = t.getContext().card; //get the card id
+        //set the share url 
+        const shareURL = `${snapshotAPI}share?id=${cardId}-${document.getElementById('device').value}`;
+        document.getElementById('shareURLSet').innerHTML =  `<a href="${shareURL}" target="_blank">${shareURL}</a>`
+
     }
 
 }
@@ -66,7 +79,7 @@ let checkForm = (check) => {
             document.getElementById('variantError').innerText = "URL's must be different"
             allowIt = 0
         }
-        return (allowIt)
+        return (allowIt);
 
     }
 }
@@ -97,10 +110,6 @@ let takeSnapshot = (state) => {
     document.getElementById('processingdiv').style.display = '';
     //set the processing timer
     var intervalId = setInterval(updateDiv, 1000);
-    //sett the api url
-    let snapshotAPI = 'https://mcpercy.pages.dev/';
-    //set default card id
-    let cardId = "Tmy81I77";
     //check if we are local and change the API url
     if (isLocal == 1)
         snapshotAPI = 'http://localhost:8789/';
@@ -215,7 +224,9 @@ t.render(function() {
         .then(function(variantURL) {
             if ((variantURL != '') && (variantURL != undefined))
                 document.getElementById("variantURL").value = variantURL
-        })
+        });
+
+
     //check if we have a control URL
     return t
         .get("card", "shared", "controlURL")
